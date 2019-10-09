@@ -1,4 +1,4 @@
-# DsaIniTool
+# DSA-Fight-Assistant
 just a little java tool to manage DSA Fights from player and npcs. 
 
 Thers not realy much to say about. Just start a new Fight add some characters with an initiative 
