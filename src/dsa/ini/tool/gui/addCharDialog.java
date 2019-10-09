@@ -99,7 +99,8 @@ public class addCharDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						okButton.disable();
-						fa.getFighte().addChar(new Charakter(txtName.getText(), txtIni.getText()));
+						Charakter ch = new Charakter(txtName.getText(), txtIni.getText(), new SplitPanel2(fa, gui));
+						fa.getFighte().addChar(ch);
 						gui.refreschList();
 						dispose();
 					}

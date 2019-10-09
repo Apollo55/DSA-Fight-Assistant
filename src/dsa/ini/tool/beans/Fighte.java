@@ -17,6 +17,13 @@ public class Fighte {
 	public Collection<Charakter> getCharakters() {
 		return charakters;
 	}
+	
+	public Charakter getCharacter(String name) {
+		for(Charakter chara : charakters) {
+			if(chara.getName().equals(name)) return chara;
+		}	
+		return null;
+	}
 
 	public void setCharakters(Collection<Charakter> charakters) {
 		this.charakters = charakters;

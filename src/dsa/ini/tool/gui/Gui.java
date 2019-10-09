@@ -1,6 +1,8 @@
 package dsa.ini.tool.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -67,13 +69,17 @@ public class Gui {
 			public void valueChanged(ListSelectionEvent arg0) {
 				int idx = getList().getSelectedIndex();
 				if (idx != -1) {
-					panel = new SplitPanel2(fA, THIS);
+					panel = getSelected().getSp();
 					panel.getIniFeld().setText(getList().getSelectedValue().getIniAsString());
+					panel.getHpBar().setText(getList().getSelectedValue().getHpAsString());
 					panel.getLblName().setText(getList().getSelectedValue().getName());
+					panel.getLblAt().setText("AT: ["+getSelected().getAt()+"]");
+					panel.getLblPa().setText("PA: ["+getSelected().getPa()+"]");
 					getSplitPane().setRightComponent(panel);
 				}
 			}
 		});
+		
 		scrollPane = new JScrollPane(getList());
 		getSplitPane().setLeftComponent(scrollPane);
 
@@ -98,8 +104,8 @@ public class Gui {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				fA.setFighte(new Fighte());
-				fA.setGui(new Gui(fA));
-				frmDsaInisiativeKampf.dispose();
+				fA.getGui().refreschList();
+				getSplitPane().setRightComponent(new JPanel());
 			}
 		});
 		mnNewMenu.add(mntmStartNewFighte);
@@ -136,7 +142,7 @@ public class Gui {
 		});
 
 		getList().setSelectedValue(ch, true);
-		scrollPane.updateUI();
+		//scrollPane.updateUI();
 	}
 
 	public JList<Charakter> getList() {
@@ -153,6 +159,10 @@ public class Gui {
 
 	public void setSplitPane(JSplitPane splitPane) {
 		this.splitPane = splitPane;
+	}
+	
+	private Charakter getSelected() {
+		return getList().getSelectedValue();
 	}
 
 }
