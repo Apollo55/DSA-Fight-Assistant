@@ -415,7 +415,7 @@ public class SplitPanel2 extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 
-				if (arg0.getKeyCode() == 10) {
+				if (arg0.getKeyCode() == 10 || arg0.getKeyCode() == 13) {
 					ch.setIni(Integer.parseInt(getIniFeld().getText()));
 					ch.setHp(Integer.parseInt(getHpBar().getText()));
 					
