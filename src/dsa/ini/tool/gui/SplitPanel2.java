@@ -135,15 +135,17 @@ public class SplitPanel2 extends JPanel {
 				public void mousePressed(MouseEvent arg0) {
 					Collection<Charakter> chars = FA.getFighte().getALL();
 					int i = 0;
-					for (Charakter ch : chars) {
-						if (ch.getName().contains(ch.getName()))
+					String[] sAr = ch.getName().split(" ");
+					for (Charakter chs : chars) {
+						if (chs.getName().contains(sAr[0]))
 							i++;
 					}
-
-					FA.getFighte().addChar(new Charakter(ch.getName() + " " +i+1,
-							ch.getIniAsString(), getThis()));
+					
+					FA.getFighte().addChar(new Charakter(sAr[0] + " " +(i+1),
+							ch.getIniAsString(), new SplitPanel2(fa, gui)));
+					
 					if(i==1)
-						ch.setName(ch.getName() + "1");
+						ch.setName(sAr[0] + " 1");
 					
 					GUI.refreschList();
 
