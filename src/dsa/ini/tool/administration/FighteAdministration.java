@@ -1,7 +1,9 @@
 package dsa.ini.tool.administration;
 
+import dsa.ini.tool.beans.Charakter;
 import dsa.ini.tool.beans.Fighte;
 import dsa.ini.tool.gui.Gui;
+import dsa.ini.tool.gui.SplitPanel2;
 
 public class FighteAdministration {
 
@@ -18,6 +20,10 @@ public class FighteAdministration {
 
 	public void setFighte(Fighte fighte) {
 		this.fighte = fighte;
+		
+		for(Charakter ch : fighte.getALL()) {
+			ch.setSp(new SplitPanel2(this, gui));
+		}
 	}
 
 	public Gui getGui() {

@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,6 +23,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dsa.ini.tool.administration.FighteAdministration;
 import dsa.ini.tool.beans.Charakter;
 import dsa.ini.tool.beans.Fighte;
@@ -36,6 +41,8 @@ public class Gui {
 	private JMenu mnNewMenu;
 	private JMenuItem mntmAddCharacter;
 	private JMenuItem mntmStartNewFighte;
+	private JMenuItem mntmSaveFight;
+	private JMenuItem mntmLoardFight;
 	private JList<Charakter> list;
 	private JScrollPane scrollPane;
 	private SplitPanel2 panel;
@@ -71,11 +78,11 @@ public class Gui {
 				if (idx != -1) {
 					panel = getSelected().getSp();
 					panel.getIniFeld().setText(getList().getSelectedValue().getIniAsString());
-					panel.getHpBar().setText(getList().getSelectedValue().getHpAsString());
-					panel.getLblName().setText(getList().getSelectedValue().getName());
-					panel.getLblAt().setText("AT: ["+getSelected().getAt()+"]");
-					panel.getLblPa().setText("PA: ["+getSelected().getPa()+"]");
-					getSplitPane().setRightComponent(panel);
+						panel.getHpBar().setText(getList().getSelectedValue().getHpAsString());
+						panel.getLblName().setText(getList().getSelectedValue().getName());
+						panel.getLblAt().setText("AT: ["+getSelected().getAt()+"]");
+						panel.getLblPa().setText("PA: ["+getSelected().getPa()+"]");
+						getSplitPane().setRightComponent(panel);
 				}
 			}
 		});
@@ -95,7 +102,7 @@ public class Gui {
 		mntmAddCharacter.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				new addCharDialog(fA, THIS);
+				new addCharDialog(getfA(), THIS);
 			}
 		});
 
@@ -103,29 +110,69 @@ public class Gui {
 		mntmStartNewFighte.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				fA.setFighte(new Fighte());
-				fA.getGui().refreschList();
+				getfA().setFighte(new Fighte());
+				getfA().getGui().refreschList();
 				getSplitPane().setRightComponent(new JPanel());
 			}
 		});
 		mnNewMenu.add(mntmStartNewFighte);
 		mnNewMenu.add(mntmAddCharacter);
 		
+		mntmLoardFight = new JMenuItem("Load Fight");
+		mntmLoardFight.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				ObjectMapper mapper = new ObjectMapper();
+
+				String s = "{\"charakters\":[{\"name\":\"may\",\"ini\":1,\"hp\":0,\"mu\":0,\"kl\":0,\"in\":0,\"ch\":0,\"ff\":0,\"ge\":0,\"ko\":0,\"kk\":0,\"at\":0,\"pa\":0}]}";
+				
+				try {
+					Fighte f = mapper.readValue(s, dsa.ini.tool.beans.Fighte.class);
+					getfA().setFighte(f);
+					
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				refreschList();
+			}
+		});
+		mnNewMenu.add(mntmLoardFight);
+		
+		mntmSaveFight = new JMenuItem("Save Fight");
+		mntmSaveFight.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					//mapper.writeValue(new File("src/save/save.json"), getfA().getFighte());
+		            String jsonString = mapper.writeValueAsString(getfA().getFighte());
+
+		            System.out.println(jsonString);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		mnNewMenu.add(mntmSaveFight);
+		
 		mntmClose = new JMenuItem("Close");
 		mntmClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				frmDsaInisiativeKampf.dispose();
+				Runtime.getRuntime().exit(0);
 			}
 		});
 		mnNewMenu.add(mntmClose);
-
+		
 		frmDsaInisiativeKampf.setVisible(true);
 	}
 
 	@SuppressWarnings({ "rawtypes", "serial", "unchecked" })
 	public void refreschList() {
-		Collection<Charakter> all = fA.getFighte().getALL();
+		Collection<Charakter> all = getfA().getFighte().getALL();
 		Collections.sort((java.util.List<Charakter>) all);
 		Charakter ch = getList().getSelectedValue();
 
@@ -163,6 +210,10 @@ public class Gui {
 	
 	private Charakter getSelected() {
 		return getList().getSelectedValue();
+	}
+
+	public FighteAdministration getfA() {
+		return fA;
 	}
 
 }

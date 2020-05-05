@@ -3,6 +3,8 @@ package dsa.ini.tool.beans;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Fighte {
 	private Collection<Charakter> charakters;
 
@@ -33,6 +35,7 @@ public class Fighte {
 		this.charakters.add(ch);
 	}
 
+	@JsonIgnore
 	public Collection<Charakter> getALL() {
 		return charakters;
 	}
