@@ -124,17 +124,21 @@ public class Gui {
 		mntmLoardFight.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				ObjectMapper mapper = new ObjectMapper();
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				int result = fileChooser.showOpenDialog(new JDialog());
 
-				String s = "{\"charakters\":[{\"name\":\"may\",\"ini\":1,\"hp\":0,\"mu\":0,\"kl\":0,\"in\":0,\"ch\":0,\"ff\":0,\"ge\":0,\"ko\":0,\"kk\":0,\"at\":0,\"pa\":0}]}";
-				
-				try {
-					Fighte f = mapper.readValue(s, dsa.ini.tool.beans.Fighte.class);
-					getfA().setFighte(f);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					ObjectMapper mapper = new ObjectMapper();
 					
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					try {
+						Fighte f = mapper.readValue(fileChooser.getSelectedFile(), dsa.ini.tool.beans.Fighte.class);
+						getfA().setFighte(f);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 				}
 				
 				refreschList();
@@ -146,7 +150,6 @@ public class Gui {
 		mntmSaveFight.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				//SaveFileWindow sfw = new SaveFileWindow(getfA().getFighte());
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 				int result = fileChooser.showOpenDialog(new JDialog());
