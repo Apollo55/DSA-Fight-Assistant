@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.AbstractListModel;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -144,15 +146,20 @@ public class Gui {
 		mntmSaveFight.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				ObjectMapper mapper = new ObjectMapper();
-				try {
-					//mapper.writeValue(new File("src/save/save.json"), getfA().getFighte());
-		            String jsonString = mapper.writeValueAsString(getfA().getFighte());
-
-		            System.out.println(jsonString);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				//SaveFileWindow sfw = new SaveFileWindow(getfA().getFighte());
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				int result = fileChooser.showOpenDialog(new JDialog());
+				
+				if (result == JFileChooser.APPROVE_OPTION) {
+					ObjectMapper mapper = new ObjectMapper();
+					
+					try {
+						mapper.writeValue(fileChooser.getSelectedFile(), getfA().getFighte());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
