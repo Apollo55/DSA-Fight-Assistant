@@ -120,8 +120,6 @@ public class SplitPanel2 extends JPanel {
 				FA.getFighte().deleteChar(ch);
 				GUI.getSplitPane().setRightComponent(new JPanel());
 				GUI.refreschList();
-				
-				
 			}
 		});
 		add(btnDel);
