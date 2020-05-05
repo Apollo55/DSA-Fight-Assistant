@@ -23,6 +23,7 @@ public class FighteAdministration {
 		
 		for(Charakter ch : fighte.getALL()) {
 			ch.setSp(new SplitPanel2(this, gui));
+			ch.getSp().setCh(ch);
 		}
 	}
 
